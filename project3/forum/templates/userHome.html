@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  	<title>Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        table, th, td {
+            border: 1px solid;
+        }
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+            justify-content: center;
+        }
+        form { 
+            margin: 0 auto; 
+            width:250px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div style="background-color:lavender; !important" class="jumbotron text-center bg-primary">
+            <h2> Welcome back {{username}}.</h2>
+    </div>
+    {% if action_fail %}
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">There is something wrong</h4>
+        <p>You should check input values.</p>
+    </div>
+    {% endif %}
+
+
+    {% if isDepartmentManager %}
+    <div class="center">
+        <h1>STUDENTS:</h1>
+        <table class="center">
+            <colgroup>
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 70%;">
+                <col span="1" style="width: 15%;">
+            </colgroup>
+            <tr>
+                <th>username</th>
+                <th>name</th>
+                <th>surname</th>
+                <th>email</th>
+                <th>department_id</th>
+                <th>completed_credits</th>
+                <th>GPA</th>
+            </tr>
+            {% for row in students %}
+            <tr>
+                {% for value in row %}
+                <td>
+                    {{value}}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+
+    {% if isDepartmentManager %}
+    <div class="center">
+        <h1>INSTRUCTORS:</h1>
+        <table class="center">
+            <colgroup>
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 70%;">
+                <col span="1" style="width: 15%;">
+            </colgroup>
+            <tr>
+                <th>username</th>
+                <th>name</th>
+                <th>surname</th>
+                <th>email</th>
+                <th>department_id</th>
+                <th>title</th>
+            </tr>
+            {% for row in instructors %}
+            <tr>
+                {% for value in row %}
+                <td>
+                    {{value}}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+    
+    <div class="center">
+     
+        {% if isDepartmentManager %}
+        <form id="postform" class="form-group" method="POST" action="{%url 'createStudent' %}">
+                {%csrf_token%}
+                <br>
+                <label>Create Student:</label>
+                <br>
+                <input type="text" name="username" placeholder="username" required>
+                <br>
+                <input type="text" name="password" placeholder="password" required>
+                <br>
+                <input type="text" name="name" placeholder="name" required>
+                <br>
+                <input type="text" name="surname" placeholder="surname" required>
+                <br>
+                <input type="text" name="email" placeholder="email" required>
+                <br>
+                <input type="text" name="department_id" placeholder="department_id" required>
+                <br>
+                <input type="text" name="students_id" placeholder="students_id" required>
+                <br>
+  
+                <input type="submit" name="submit" value="Create Student">
+                <br>
+        </form>
+        <form id="postform" class="form-group" method="POST" action="{%url 'createInstructor' %}">
+            {%csrf_token%}
+            <br>
+            <label>Create Instructor:</label>
+            <br>
+            <input type="text" name="username" placeholder="username" required>
+            <br>
+            <input type="text" name="password" placeholder="password" required>
+            <br>
+            <input type="text" name="name" placeholder="name" required>
+            <br>
+            <input type="text" name="surname" placeholder="surname" required>
+            <br>
+            <input type="text" name="email" placeholder="email" required>
+            <br>
+            <input type="text" name="department_id" placeholder="department_id" required>
+            <br>
+            <input type="text" name="title" placeholder="title" required>
+            <br>
+
+            <input type="submit" name="submit" value="Create Instructor">
+            <br>
+    </form>
+    {% endif %}
+
+    </div>
+    {% if isDepartmentManager %}
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'deleteStudent' %}">
+                {%csrf_token%}
+                <br>
+                <label>Delete Student:</label>
+                <br>
+                <input type="text" name="students_id" placeholder="students_id" required>
+                
+                <input type="submit" name="submit" value="Delete student">
+                <br>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if isDepartmentManager %}
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'updateTitle' %}">
+                {%csrf_token%}
+                <br>
+                <label>Update Title:</label>
+                <br>
+                <input type="text" name="instructor_username" placeholder="instructor_username" required>
+                <input type="text" name="title" placeholder="title" required>
+                
+                <input type="submit" name="submit" value="Update title">
+                <br>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if isDepartmentManager %}
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'viewGrades' %}">
+                {%csrf_token%}
+                <br>
+                <label>View Grades:</label>
+                <br>
+                <input type="text" name="students_id" placeholder="students_id" required>
+                
+                <input type="submit" name="submit" value="View Grades">
+                <br>
+
+                <table class="center">
+                    <colgroup>
+                        <col span="1" style="width: 15%;">
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 15%;">
+                    </colgroup>
+                    <tr>
+                        <th>course_id</th>
+                        <th>course_name</th>
+                        <th>grade</th>
+          
+                    </tr>
+                    {% for row in grades %}
+                    <tr>
+                        {% for value in row %}
+                        <td>
+                            {{value}}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+        </form>
+    </div>
+    {% endif %}
+    {% if isDepartmentManager %}
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'viewCourses' %}">
+                {%csrf_token%}
+                <br>
+                <label>View Courses:</label>
+                <br>
+                <input type="text" name="instructor_username" placeholder="instructor_username" required>
+                
+                <input type="submit" name="submit" value="View Courses">
+                <br>
+
+                <table class="center">
+                    <colgroup>
+                        <col span="1" style="width: 15%;">
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 15%;">
+                    </colgroup>
+                    <tr>
+                        <th>course_id</th>
+                        <th>course_name</th>
+                        <th>classroom_id</th>
+                        <th>campus</th>
+                        <th>time_slot</th>
+
+          
+                    </tr>
+                    {% for row in courses %}
+                    <tr>
+                        {% for value in row %}
+                        <td>
+                            {{value}}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+        </form>
+    </div>
+    {% endif %}
+
+    {% if isDepartmentManager %}
+
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'viewGradeAverage' %}">
+                {%csrf_token%}
+                <br>
+                <label>View GradeAverage:</label>
+                <br>
+                <input type="text" name="course_id" placeholder="course_id" required>
+                
+                <input type="submit" name="submit" value="View GradeAverage">
+                <br>
+
+                <table class="center">
+                    <colgroup>
+                        <col span="1" style="width: 15%;">
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 15%;">
+                    </colgroup>
+                    <tr>
+                        <th>course_id</th>
+                        <th>course_name</th>
+                        <th>grades_average</th>
+
+
+          
+                    </tr>
+                    {% for row in courses_grade_avg %}
+                    <tr>
+                        {% for value in row %}
+                        <td>
+                            {{value}}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+        </form>
+    </div>
+    {% endif %}
+
+    {% if isInstructor %}
+
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'viewAvailableClassrooms' %}">
+                {%csrf_token%}
+                <br>
+                <label>Available Classrooms:</label>
+                <br>
+                <input type="text" name="slot" placeholder="slot" required>
+                
+                <input type="submit" name="submit" value="View AvailableClassrooms">
+                <br>
+
+                <table class="center">
+                    <colgroup>
+                        <col span="1" style="width: 15%;">
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 15%;">
+                    </colgroup>
+                    <tr>
+                        <th>classroom_id</th>
+                        <th>campus</th>
+                        <th>classroom_capacity</th>
+
+
+          
+                    </tr>
+                    {% for row in availableClassrooms %}
+                    <tr>
+                        {% for value in row %}
+                        <td>
+                            {{value}}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+        </form>
+    </div>
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'addCourses' %}">
+                {%csrf_token%}
+                <br>
+                <label>Add Courses:</label>
+                <br>
+                <input type="text" name="course_id" placeholder="course_id" required>
+                <input type="text" name="course_name" placeholder="course_name" required>
+                <input type="text" name="credits" placeholder="credits" required>
+                <input type="text" name="classroom_id" placeholder="classroom_id" required>
+                <input type="text" name="slot" placeholder="slot" required>
+                <input type="text" name="quota" placeholder="quota" required>
+
+
+                <input type="submit" name="submit" value="addCourses">
+                <br>
+                
+        </form>
+    </div>
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'addPrerequisite' %}">
+                {%csrf_token%}
+                <br>
+                <label>Add Prerequisite:</label>
+                <br>
+                <input type="text" name="primary_course_id" placeholder="primary_course_id" required>
+                <input type="text" name="prev_course_id" placeholder="prev_course_id" required>
+
+
+                <input type="submit" name="submit" value="addCourses">
+                <br>
+                
+        </form>
+    </div>
+
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'viewAvailableClassrooms' %}">
+                {%csrf_token%}
+                <br>
+                <label>View Courses :</label>
+                <br>
+                
+                <br>
+
+                <table class="center">
+                    <colgroup>
+                        <col span="1" style="width: 15%;">
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 15%;">
+                    </colgroup>
+                    <tr>
+                        <th>course_id</th>
+                        <th>course_name</th>
+                        <th>classroom_id</th>
+                        <th>slot</th>
+                        <th>quota</th>
+                        <th>prerequisite_list</th>
+
+          
+                    </tr>
+                    {% for row in all_courses %}
+                    <tr>
+                        {% for value in row %}
+                        <td>
+                            {{value}}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+        </form>
+    </div>
+
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'viewStudentsTakenCourse' %}">
+                {%csrf_token%}
+                <br>
+                <label>Students Taken Course:</label>
+                <br>
+                <input type="text" name="course_id" placeholder="course_id" required>
+                
+                <input type="submit" name="submit" value="View StudentsTakenCourse">
+                <br>
+
+                <table class="center">
+                    <colgroup>
+                        <col span="1" style="width: 15%;">
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 15%;">
+                    </colgroup>
+                    <tr>
+                        <th>username</th>
+                        <th>students_id</th>
+                        <th>email</th>
+                        <th>name</th>
+                        <th>surname</th>
+                    </tr>
+                    {% for row in students_taken_course %}
+                    <tr>
+                        {% for value in row %}
+                        <td>
+                            {{value}}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+        </form>
+    </div>
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'updateCourseName' %}">
+                {%csrf_token%}
+                <br>
+                <label>Update Course Name:</label>
+                <br>
+                <input type="text" name="course_id" placeholder="course_id" required>
+                <input type="text" name="course_name" placeholder="course_name" required>
+                
+                <input type="submit" name="submit" value="Update Course Name">
+                <br>
+        </form>
+    </div>
+
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'giveGrade' %}">
+                {%csrf_token%}
+                <br>
+                <label>Give Grade:</label>
+                <br>
+                <input type="text" name="course_id" placeholder="course_id" required>
+                <input type="text" name="student_id" placeholder="student_id" required>
+                <input type="text" name="grade" placeholder="grade" required>
+
+                <input type="submit" name="submit" value="Give Grade">
+                <br>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if isStudent %}
+    <div class="center">
+        <h1>Given Courses:</h1>
+        <table class="center">
+            <colgroup>
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 70%;">
+                <col span="1" style="width: 15%;">
+            </colgroup>
+            <tr>
+                <th>course_id</th>
+                <th>course_name</th>
+                <th>instructor_surname</th>
+                <th>department</th>
+                <th>credits</th>
+                <th>classroom_id</th>
+                <th>slot</th>
+                <th>quota</th>
+                <th>prerequisites</th>
+
+            </tr>
+            {% for row in givenCourses %}
+            <tr>
+                {% for value in row %}
+                <td>
+                    {{value}}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="center">
+        <h1>Taken Courses:</h1>
+        <table class="center">
+            <colgroup>
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 70%;">
+                <col span="1" style="width: 15%;">
+            </colgroup>
+            <tr>
+                <th>course_id</th>
+                <th>name</th>
+                <th>grade</th>
+
+            </tr>
+            {% for row in takenCourses %}
+            <tr>
+                {% for value in row %}
+                <td>
+                    {{value}}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 's_addCourse' %}">
+                {%csrf_token%}
+                <br>
+                <label>Add Course:</label>
+                <br>
+                <input type="text" name="course_id" placeholder="course_id" required>
+
+                <input type="submit" name="submit" value="Add Course">
+                <br>
+        </form>
+    </div>
+
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'searched_courses' %}">
+                {%csrf_token%}
+                <br>
+                <label>Searched Courses:</label>
+                <br>
+                <input type="text" name="searched" placeholder="searchCourse" required>
+                
+                <input type="submit" name="submit" value="searchCourse">
+                <br>
+
+                <table class="center">
+                    <colgroup>
+                        <col span="1" style="width: 15%;">
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 15%;">
+                    </colgroup>
+                    <tr>
+                        <th>course_id</th>
+                        <th>course_name</th>
+                        <th>instructor_surname</th>
+                        <th>department_id</th>
+                        <th>credits</th>
+                        <th>classroom_id</th>
+                        <th>slot</th>
+                        <th>quota</th>
+                        <th>prerequisite_list</th>
+
+                    </tr>
+                    {% for row in searched_courses %}
+                    <tr>
+                        {% for value in row %}
+                        <td>
+                            {{value}}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+        </form>
+    </div>
+
+    <div class="center">
+        <form id="postform" class="form-group" method="POST" action="{%url 'filterCourses' %}">
+                {%csrf_token%}
+                <br>
+                <label>Searched Courses:</label>
+                <br>
+                <input type="text" name="department_id" placeholder="department_id" required>
+                <input type="text" name="campus" placeholder="campus" required>
+                <input type="text" name="minimum_credits" placeholder="minimum_credits" required>
+                <input type="text" name="maximum_credits" placeholder="maximum_credits" required>
+
+                <input type="submit" name="submit" value="filter courses">
+                <br>
+
+                <table class="center">
+                    <colgroup>
+                        <col span="1" style="width: 15%;">
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 15%;">
+                    </colgroup>
+                    <tr>
+                        <th>course_id</th>
+
+                    </tr>
+                    {% for row in filterCourses %}
+                    <tr>
+                        {% for value in row %}
+                        <td>
+                            {{value}}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+        </form>
+    </div>
+
+    {% endif %}
+
+
+
+    <a href="{%url 'index' %}"> <p style="text-align:center">Logout</p></a>
+</body>
+</html>
